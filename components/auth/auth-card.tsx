@@ -40,10 +40,11 @@ export function AuthCard() {
     setLoading(true);
     try {
       await postJson(
-        "/auth/register",
+        "/api/auth/register",
         { name, email, password },
         { withAuth: false }
       );
+
       toast({ title: "Account created", description: "You can now log in." });
       resetFields();
       setTab("login");
@@ -99,7 +100,7 @@ export function AuthCard() {
         token: string;
         displayName: string;
         email: string;
-      }>("/auth/login", { email, password }, { withAuth: false });
+      }>("/api/auth/login", { email, password }, { withAuth: false });
 
       const user = {
         name: res.displayName || res.email.split("@")[0],
