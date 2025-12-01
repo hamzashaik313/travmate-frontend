@@ -27,8 +27,15 @@ export async function apiFetch<T = any>(
   const res = await fetch(url, { ...options, headers });
 
   if (!res.ok) {
-    const text = await res.text().catch(() => "");
-    throw new Error(text || `Request failed: ${res.status}`);
+    let message = `Request failed: ${res.status}`;
+    try {
+      const errorJson = await res.json();
+      message = errorJson.message || errorJson.error || message;
+    } catch {
+      const text = await res.text().catch(() => "");
+      if (text) message = text;
+    }
+    throw new Error(message);
   }
 
   if (res.status === 204) return undefined as unknown as T;

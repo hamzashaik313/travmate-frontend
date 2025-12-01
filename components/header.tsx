@@ -56,14 +56,101 @@
 //   );
 // }
 
-// components/header.tsx
+// // components/header.tsx
+// import { ThemeToggle } from "@/components/ui/theme-toggle";
+// import { useAuth } from "@/components/auth/auth-context";
+// // Import icons (using Lucide for a common React/Shadcn choice)
+// import { User, LogOut, Settings } from "lucide-react";
+// import Link from "next/link"; // Assuming you use Next.js Link for navigation
+
+// // Assuming you have these components from Shadcn/UI or similar:
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuLabel,
+//   DropdownMenuSeparator,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
+
+// export function AppHeader() {
+//   const { user, logout } = useAuth();
+//   const userName = user?.email?.split("@")[0] ?? "User"; // Safe default
+
+//   return (
+//     <header className="w-full flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-white/10 backdrop-blur-xl bg-white/10 dark:bg-black/20 fixed top-0 left-0 z-50">
+//       <h1 className="text-xl font-semibold">TravMate</h1>
+
+//       <div className="flex items-center gap-4">
+//         <ThemeToggle />
+
+//         {/* --- Profile Dropdown Menu --- */}
+//         <DropdownMenu>
+//           {/* Trigger: The User's Name/Icon */}
+//           <DropdownMenuTrigger asChild>
+//             <button className="flex items-center gap-2 px-3 py-2 bg-secondary text-secondary-foreground rounded-lg transition hover:bg-secondary/80">
+//               <User className="h-4 w-4" />
+//               <span className="font-medium">{userName}</span>
+//             </button>
+//           </DropdownMenuTrigger>
+
+//           {/* Content: The actual dropdown menu */}
+//           <DropdownMenuContent className="w-56" align="end">
+//             <DropdownMenuLabel className="font-semibold">
+//               {userName}'s Account
+//             </DropdownMenuLabel>
+//             <DropdownMenuSeparator />
+
+//             {/* My Profile Link */}
+//             <DropdownMenuItem asChild>
+//               {/* Change this to your actual profile route */}
+//               <Link
+//                 href="/profile"
+//                 className="flex items-center cursor-pointer"
+//               >
+//                 <User className="mr-2 h-4 w-4" />
+//                 <span>My Profile</span>
+//               </Link>
+//             </DropdownMenuItem>
+
+//             {/* Settings Link */}
+//             <DropdownMenuItem asChild>
+//               {/* Change this to your actual settings route */}
+//               <Link
+//                 href="/settings"
+//                 className="flex items-center cursor-pointer"
+//               >
+//                 <Settings className="mr-2 h-4 w-4" />
+//                 <span>Settings</span>
+//               </Link>
+//             </DropdownMenuItem>
+
+//             <DropdownMenuSeparator />
+
+//             {/* Logout Action */}
+//             <DropdownMenuItem
+//               onClick={logout}
+//               className="flex items-center cursor-pointer text-red-600 dark:text-red-400 hover:!bg-red-500/10"
+//             >
+//               <LogOut className="mr-2 h-4 w-4" />
+//               <span>Log Out</span>
+//             </DropdownMenuItem>
+//           </DropdownMenuContent>
+//         </DropdownMenu>
+//         {/* ------------------------------- */}
+//       </div>
+//     </header>
+//   );
+// }
+
+"use client";
+
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useAuth } from "@/components/auth/auth-context";
-// Import icons (using Lucide for a common React/Shadcn choice)
-import { User, LogOut, Settings } from "lucide-react";
-import Link from "next/link"; // Assuming you use Next.js Link for navigation
+import { User, LogOut, Settings, Compass } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-// Assuming you have these components from Shadcn/UI or similar:
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -75,18 +162,51 @@ import {
 
 export function AppHeader() {
   const { user, logout } = useAuth();
-  const userName = user?.email?.split("@")[0] ?? "User"; // Safe default
+  const pathname = usePathname();
+  const userName = user?.email?.split("@")[0] ?? "User";
 
   return (
     <header className="w-full flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-white/10 backdrop-blur-xl bg-white/10 dark:bg-black/20 fixed top-0 left-0 z-50">
-      <h1 className="text-xl font-semibold">TravMate</h1>
+      {/* App name / logo */}
+      <div className="flex items-center gap-6">
+        <h1 className="text-xl font-semibold">TravMate</h1>
 
+        {/* ✅ Add simple navigation links */}
+        <nav className="hidden sm:flex gap-5 text-sm font-medium">
+          <Link
+            href="/dashboard"
+            className={`hover:text-blue-600 transition ${
+              pathname === "/dashboard" ? "text-blue-600" : ""
+            }`}
+          >
+            Dashboard
+          </Link>
+
+          <Link
+            href="/trips/matches"
+            className={`hover:text-blue-600 transition ${
+              pathname === "/trips/matches" ? "text-blue-600" : ""
+            }`}
+          >
+            Matching Trips
+          </Link>
+
+          <Link
+            href="/trips/discover"
+            className={`hover:text-blue-600 transition ${
+              pathname === "/trips/discover" ? "text-blue-600" : ""
+            }`}
+          >
+            Discover
+          </Link>
+        </nav>
+      </div>
+
+      {/* Right side — theme toggle + user menu */}
       <div className="flex items-center gap-4">
         <ThemeToggle />
 
-        {/* --- Profile Dropdown Menu --- */}
         <DropdownMenu>
-          {/* Trigger: The User's Name/Icon */}
           <DropdownMenuTrigger asChild>
             <button className="flex items-center gap-2 px-3 py-2 bg-secondary text-secondary-foreground rounded-lg transition hover:bg-secondary/80">
               <User className="h-4 w-4" />
@@ -94,16 +214,13 @@ export function AppHeader() {
             </button>
           </DropdownMenuTrigger>
 
-          {/* Content: The actual dropdown menu */}
           <DropdownMenuContent className="w-56" align="end">
             <DropdownMenuLabel className="font-semibold">
               {userName}'s Account
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
 
-            {/* My Profile Link */}
             <DropdownMenuItem asChild>
-              {/* Change this to your actual profile route */}
               <Link
                 href="/profile"
                 className="flex items-center cursor-pointer"
@@ -113,9 +230,7 @@ export function AppHeader() {
               </Link>
             </DropdownMenuItem>
 
-            {/* Settings Link */}
             <DropdownMenuItem asChild>
-              {/* Change this to your actual settings route */}
               <Link
                 href="/settings"
                 className="flex items-center cursor-pointer"
@@ -127,7 +242,6 @@ export function AppHeader() {
 
             <DropdownMenuSeparator />
 
-            {/* Logout Action */}
             <DropdownMenuItem
               onClick={logout}
               className="flex items-center cursor-pointer text-red-600 dark:text-red-400 hover:!bg-red-500/10"
@@ -137,7 +251,6 @@ export function AppHeader() {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        {/* ------------------------------- */}
       </div>
     </header>
   );

@@ -1,3 +1,4 @@
+//components/auth/auth-acrd.tsx
 "use client";
 
 import { useState } from "react";
@@ -61,38 +62,6 @@ export function AuthCard() {
     }
   };
 
-  // const handleLogin = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const res = await postJson<{
-  //       token: string;
-  //       displayName: string;
-  //       email: string;
-  //     }>("/auth/login", { email, password }, { withAuth: false });
-
-  //     const user = {
-  //       name: res.displayName || res.email.split("@")[0],
-  //       email: res.email,
-  //     };
-
-  //     login(res.token, user);
-
-  //     toast({
-  //       title: "Welcome",
-  //       description: `Logged in as ${user.name}`,
-  //     });
-
-  //     router.push("/dashboard");
-  //   } catch (e: any) {
-  //     toast({
-  //       title: "Login failed",
-  //       description: e.message || "Invalid email or password",
-  //       variant: "destructive",
-  //     });
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
   const handleLogin = async () => {
     setLoading(true);
     try {

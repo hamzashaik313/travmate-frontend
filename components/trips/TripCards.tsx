@@ -123,3 +123,5 @@ function TripCard({ trip, onClick }: { trip: Trip; onClick: () => void }) {
     </div>
   );
 }
+
+//afetr deployemet

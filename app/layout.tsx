@@ -79,7 +79,7 @@ import "./globals.css";
 import { Providers } from "@/components/providers";
 import { AuthProvider } from "@/components/auth/auth-context";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "react-hot-toast"; // ✅ use react-hot-toast version
 
 export const metadata: Metadata = {
   title: "TravMate",
@@ -100,7 +100,9 @@ export default function RootLayout({
           </AuthProvider>
         </ThemeProvider>
 
-        <Toaster />
+        {/* ✅ global toast notifications */}
+        <Toaster position="top-center" reverseOrder={false} />
+
         <Analytics />
       </body>
     </html>
